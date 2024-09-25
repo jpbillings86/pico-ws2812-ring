@@ -1,9 +1,6 @@
-import select
-import sys
-import time
+import select, sys, time
 
-import config
-import ringController
+import config, ringController
 
 poll_obj = select.poll()
 poll_obj.register(sys.stdin, select.POLLIN)
@@ -11,38 +8,39 @@ poll_obj.register(sys.stdin, select.POLLIN)
 while True:
     poll_results = poll_obj.poll(1)
     if poll_results:
+        # Split input
         txt = sys.stdin.readline().strip()
         x = txt.split("#")
+        
+        # Set Color
         data = x[0]
-        count = x[1]
         if data == 'red':
-            ringController.set_color(config.blank,config.led_count)
-            ringController.set_color(config.red,count)
+            color = config.red
         elif data == 'green':
-            ringController.set_color(config.blank,config.led_count)
-            ringController.set_color(config.green,count)
+            color = config.green
         elif data == 'blue':
-            ringController.set_color(config.blank,config.led_count)
-            ringController.set_color(config.blue,count)
+            color = config.blue
         elif data == 'yellow':
-            ringController.set_color(config.blank,config.led_count)
-            ringController.set_color(config.yellow,count)
+            color = config.yellow
         elif data == 'pink':
-            ringController.set_color(config.blank,config.led_count)
-            ringController.set_color(config.pink,count)
+            color = config.pink
         elif data == 'cyan':
-            ringController.set_color(config.blank,config.led_count)
-            ringController.set_color(config.cyan,count)
+            color = config.cyan
         elif data == 'purple':
-            ringController.set_color(config.blank,config.led_count)
-            ringController.set_color(config.purple,count)
+            color = config.purple
         elif data == 'white':
-            ringController.set_color(config.blank,config.led_count)
-            ringController.set_color(config.white,count)
+            color = config.white
         elif data == 'orange':
-            ringController.set_color(config.blank,config.led_count)
-            ringController.set_color(config.orange,count)
+            color = config.orange
         else:
-            ringController.set_color(config.blank,config.led_count)
+            color = config.blank
+        
+        # Set LED co
+        count = int(x[1])
+        if count > config.led_count:
+            count = config.led_count
+            
+        ringController.set_color(config.blank,config.led_count)
+        ringController.set_color(color,count)
     else:
         continue
